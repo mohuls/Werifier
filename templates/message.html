@@ -1,0 +1,46 @@
+{% load static %}
+<script src="{% static 'plugins/notifications/js/lobibox.min.js' %}"></script>
+<script src="{% static 'plugins/notifications/js/notifications.min.js' %}"></script>
+{% for message in messages %}
+    {% if message.tags == 'warning' %}
+    <script>
+    Lobibox.notify('warning', {
+        pauseDelayOnHover: true,
+        continueDelayOnInactiveTab: false,
+        position: 'top right',
+        icon: 'bx bx-error',
+        msg: '{{message}}'
+    });
+    </script>
+    {% elif message.tags == 'error' %}
+    <script>
+    Lobibox.notify('error', {
+        pauseDelayOnHover: true,
+        continueDelayOnInactiveTab: false,
+        position: 'top right',
+        icon: 'bx bx-x-circle',
+        msg: '{{message}}'
+    });
+    </script>
+    {% elif message.tags == 'info' %}
+    <script>
+        Lobibox.notify('info', {
+            pauseDelayOnHover: true,
+            continueDelayOnInactiveTab: false,
+            position: 'top right',
+            icon: 'bx bx-info-circle',
+            msg: '{{message}}'
+        });
+        </script>
+    {% elif message.tags == 'success' %}
+    <script>
+    Lobibox.notify('success', {
+        pauseDelayOnHover: true,
+        continueDelayOnInactiveTab: false,
+        position: 'top right',
+        icon: 'bx bx-check-circle',
+        msg: '{{message}}'
+    });
+    </script>
+    {% endif %}
+{% endfor %}

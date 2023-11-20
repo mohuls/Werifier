@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load list_report %}
+{% block title %}WhatsApp Number Validation Tool | Werifier{% endblock %}
+{% block css %}
+<style>
+.grid-wrapper{
+			--auto-grid-min-size: 8rem;
+			display: grid;
+			grid-gap: 0.4rem;
+			grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		.grid-wrapper li{
+			/* background-color: #ef4444;
+			color: #ffffff; */
+			font-size: 16px;
+			list-style-type: none;
+			text-align: center;
+			text-transform: capitalize;
+      font-weight: 600;
+		}
+    /* .grid-wrapper li.totalcard{
+      background-color: #F14668;
+			color: #ffffff;
+    }
+    .grid-wrapper li.statuscard{
+      background-color: #6B011F;
+			color: #ffffff;
+    }
+    .grid-wrapper li.totalcard{
+      background-color: #F14668;
+			color: #ffffff;
+    }
+    .grid-wrapper li.totalcard{
+      background-color: #F14668;
+			color: #ffffff;
+    } */
+		.main-container{
+			margin: 0 auto;
+			max-width: 1170px;
+			padding:0rem 0rem;
+		}
+</style>
+{% endblock %}
+{% block maincontent %}
+<!-- start page content wrapper-->
+<div class="page-content-wrapper">
+  <!-- start page content-->
+  <div class="page-content">
+    <!--start breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">WhatsApp</div>
+      <div class="ps-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0 p-0 align-items-center">
+            <li class="breadcrumb-item"><a href="/">
+                <ion-icon name="home-outline"></ion-icon>
+              </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">All Lists</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="ms-auto">
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-list_modal">Add a list</button>
+        </div>
+      </div>
+    </div>
+    <!--end breadcrumb-->
+    <div id="uploading-alert" class="col-md-12 text-center">
+      
+    </div>
+    <br>
+    {% if lists %}
+    {% for list in lists %}
+    <div class="card radius-10">
+      <div class="card-header">
+        <h6 class="mb-0">{{ list.name }} (added on {{ list.created_at }})</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-2">
+            <div class="row p-1">
+              <form action="/whatsapp/exportlist/" method="POST" id="form-{{list.id}}">
+                {% csrf_token %}
+                <input type="hidden" name="list_id" required value="{{ list.id }}">
+              </form>
+              <button type="submit" form="form-{{list.id}}" class="btn btn-outline-primary px-1"><ion-icon name="cloud-download-sharp"></ion-icon>Download</button>
+            </div>
+            <div class="row p-1">
+              <button type="button" class="btn btn-outline-info px-1"><ion-icon name="bulb-sharp"></ion-icon>Browse Report</button>
+            </div>
+            <div class="row p-1">
+              <button type="button" data-id="{{ list.id }}" onclick="del(this)" class="btn btn-outline-danger px-1" data-bs-toggle="modal" data-bs-target="#delete-list_modal"><ion-icon name="trash-sharp"></ion-icon>Delete List</button>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <section>
+              <div class="main-container">
+                <ul class="grid-wrapper">
+                  <li class="totalcard">
+                    <div class="card shadow-none mb-0 bg-light-primary" style="padding: 0; margin:0;">
+                      <div class="card-body text-primary" style="margin:0; padding: 20px 15px;">
+                        <div class="d-flex align-items-center gap-3">
+                          <h6 class="mb-0">Total</h6>
+                          <div class="ms-auto">{{ list|total }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="card shadow-none mb-0 bg-light-info" style="padding: 0; margin:0;">
+                      <div class="card-body text-info" style="margin:0;padding: 20px 15px;">
+                        <div class="d-flex align-items-center gap-3">
+                          <h6 class="mb-0">Uploaded</h6>
+                          <div class="ms-auto">---</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="card shadow-none mb-0 bg-light-danger" style="padding: 0; margin:0;">
+                      <div class="card-body text-danger" style="margin:0;padding: 20px 15px;">
+                        <div class="d-flex align-items-center gap-3">
+                          <h6 class="mb-0">Failed</h6>
+                          <div class="ms-auto">---</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="card shadow-none mb-0 bg-light" style="padding: 0; margin:0;">
+                      <div class="card-body text-muted" style="margin:0;padding: 20px 15px;">
+                        <div class="d-flex align-items-center gap-3">
+                          <h6 class="mb-0">Status</h6>
+                          <div class="ms-auto">{% if list.status %}Initialized{% else %}Uninitialized{% endif %}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </section>
+          </div>
+          <div class="col-md-5">
+            {% if list.status == False %}
+            <div  class="text-center" style="margin-top: 10%;">
+              <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="validate" value="{{ list.id }}">
+                <button type="submit" onclick="st(this)" class="btn btn-lg btn-primary px-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> Start Validation</button>
+              </form>
+            </div>
+            {% else %}
+            <section>
+              <div class="main-container">
+                <ul class="grid-wrapper">
+                  <li class="totalcard">
+                    <div class="card shadow-none mb-0 bg-light-tiffany" style="padding: 0; margin:0;">
+                      <div class="card-body text-tiffany" style="margin:0; padding: 20px 15px;">
+                        <div class="d-flex align-items-center gap-3">
+                          <h6 class="mb-0">Valid</h6>
+                          <div class="ms-auto">{{ list|valid }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="card shadow-none mb-0 bg-light-success" style="padding: 0; margin:0;">
+                      <div class="card-body text-success" style="margin:0;padding: 20px 15px;">
+                        <div class="d-flex align-items-center gap-3">
+                          <h6 class="mb-0">High Prior.</h6>
+                          <div class="ms-auto">{{ list|read }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="card shadow-none mb-0 bg-light-danger" style="padding: 0; margin:0;">
+                      <div class="card-body text-danger" style="margin:0;padding: 20px 15px;">
+                        <div class="d-flex align-items-center gap-3">
+                          <h6 class="mb-0">Invalid</h6>
+                          <div class="ms-auto">{{ list|failed }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="card shadow-none mb-0 bg-light-warning" style="padding: 0; margin:0;">
+                      <div class="card-body text-warning" style="margin:0;padding: 20px 15px;">
+                        <div class="d-flex align-items-center gap-3">
+                          <h6 class="mb-0">Low Prior.</h6>
+                          <div class="ms-auto">{{ list|delivered }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </section>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+  </div>
+  <!-- end page content-->
+</div>
+<!--end page content wrapper-->
+
+<!-- Modal -->
+<div class="modal fade" id="add-list_modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload a CSV file with header <span style="color: green; font-weight: bolder">Contacts</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3" id="upload_form" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="col-12">
+            <label class="form-label">List name</label>
+            <input type="text" required name="list_name" class="form-control">
+          </div>
+          <div class="col-12 mb-4">
+            <label class="form-label">CSV file (<a href="#">Demo file</a>)</label>
+            <input type="file"  required name="number_list" class="form-control">
+          </div>
+          <div class="col-12">
+            <div class="d-grid" id="file-submit-btn">
+              <button type="submit" class="btn btn-primary">Start Importing</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal  delete list-->
+<div class="modal fade" id="delete-list_modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3" id="upload_form" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="col-12">
+            <label class="form-label">Clicking the Confim Delete button will delete the list with all contact in the list permanently.</label>
+            <input type="hidden" required name="deletelist" id="deletelist" class="form-control">
+          </div>
+          <div class="col-12">
+            <div class="d-grid" id="file-submit-btn">
+              <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+  var init = 0;
+  $("#add-list_modal").on("hidden.bs.modal", function () {
+      if (init == 1) {
+        $('#uploading-alert').html('<button  class="btn btn-warning" type="button" disabled=""> <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Hang tight! A WhatsApp contact list is being uploaded. Don\'t close or refresh this page until finished!</button>')
+      }
+      
+  });
+  $("#upload_form").on('submit', function(event) {
+    init = 1;
+    $('#file-submit-btn').html('<button class="btn btn-primary" type="submit" disabled=""> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Uploading File...</button>')
+})
+
+function del(d){
+  document.getElementById("deletelist").value = d.getAttribute("data-id");
+}
+function st(d) {
+  $(d).html('<button class="btn btn-lg btn-primary px-4" disabled="">&nbsp;<span class="spinner-border" style="height: 22px;width: 22px; " role="status" aria-hidden="true"></span> Validating...&nbsp;&nbsp;</button>')
+}
+</script>
+<script src="{% static 'plugins/apexcharts-bundle/js/apexcharts.min.js' %}"></script>
+<script>
+  // chart 8
+	var options = {
+		series: [30,50,20],
+		chart: {
+			foreColor: '#9ba7b2',
+			height: 380,
+			type: 'pie',
+		},
+		colors: ["#923eb9", "#f73757", "#18bb6b"],
+		labels: ['Delivered', 'Read', 'Failed'],
+		responsive: [{
+			breakpoint: 300,
+			options: {
+				chart: {
+					height: 260
+				},
+				legend: {
+					position: 'top'
+				}
+			}
+		}]
+	};
+	var chart = new ApexCharts(document.querySelector("#chart8"), options);
+	chart.render();
+</script>
+{% endblock %}

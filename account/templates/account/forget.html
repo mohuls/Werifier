@@ -1,0 +1,50 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% block title %}Reset your Werifier account password{% endblock %}
+{% block content %}
+<!--start wrapper-->
+<div class="wrapper">
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent p-3">
+      <div class="container-fluid">
+        <a href="/"><img src="{% static 'images/Werifier.png' %}" width="140" alt="" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
+        <div class="reset-passowrd">
+          <div class="card radius-10 w-100">
+            <div class="card-body p-4">
+              <div class="text-center">
+                <h4>Reset password</h4>
+                <p>You will receive an e-mail in maximum 60 seconds</p>
+              </div>
+              <form class="form-body row g-3">
+                <div class="col-12">
+                  <label for="inputEmail" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="inputEmail" placeholder="abc@example.com">
+                </div>
+                <div class="col-12 col-lg-12">
+                  <div class="d-grid">
+                    <button type="button" class="btn btn-primary">Send</button>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-12 text-center">
+                  <p class="mb-0">Back to <a href="{% url 'login' %}">Login</a></p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end wrapper-->
+{% endblock %}

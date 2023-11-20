@@ -1,0 +1,69 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% block title %}Login to your werifier Account{% endblock %}
+{% block content %}
+<!--start wrapper-->
+<div id="app" class="wrapper">
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent p-3">
+      <div class="container-fluid">
+        <a href="/"><img src="{% static 'images/Werifier.png' %}" width="140" alt="" /></a>
+      </div>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
+        <div class="card radius-10">
+          <div class="card-body p-4">
+            <div class="text-center">
+              <h4>Sign In</h4>
+              <p>Sign In to your account</p>
+            </div>
+            <form class="form-body row g-3">
+              <div class="col-12">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" @keyup="unameval" v-model="username" class="form-control" id="username" v-bind:class="{'is-invalid': uinval}">
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">Min 5 characters.</div>
+              </div>
+              <div class="col-12">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" @keyup="pval" v-model="password" class="form-control" id="inputPassword" v-bind:class="{'is-invalid': pinval}">
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">Min 8 characters.</div>
+              </div>
+              <div class="col-12 col-lg-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckRemember">
+                  <label class="form-check-label" for="flexSwitchCheckRemember">Remember
+                    Me</label>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 text-end">
+                <a href="{% url 'forget' %}">Forgot Password?</a>
+              </div>
+              <div class="col-12 col-lg-12">
+                <div class="d-grid">
+                  <button @click="lgin" type="button" class="btn btn-primary">
+                    <div v-if="loggingin">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      Signing In...
+                    </div>
+                    <div v-else>
+                      Sign In
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-12 text-center">
+                <p class="mb-0">Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end wrapper-->
+{% endblock %}

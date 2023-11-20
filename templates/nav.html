@@ -1,0 +1,161 @@
+<!--navigation-->
+<ul class="metismenu" id="menu">
+  <li>
+    <a href="{% url 'dashboard' %}">
+      <div class="parent-icon">
+        <ion-icon name="home-sharp"></ion-icon>
+      </div>
+      <div class="menu-title">Dashboard</div>
+    </a>
+  </li>
+  <li class="menu-label">Validation</li>
+  <li>
+    <a href="javascript:;" class="has-arrow">
+      <div class="font-22"> <i class="lni lni-whatsapp"></i>
+      </div>
+      <div class="ms-2"><span>WhatsApp</span>
+      </div>
+    </a>
+    <ul>
+      <li> <a href="{% url 'list' %}">
+          <ion-icon name="ellipse-outline"></ion-icon>Validator
+        </a>
+      </li>
+      <li> <a href="{% url 'leads' %}">
+          <ion-icon name="ellipse-outline"></ion-icon>Leads
+        </a>
+      </li>
+      <!-- <li> <a href="#">
+          <ion-icon name="ellipse-outline"></ion-icon>settings
+        </a>
+      </li> -->
+    </ul>
+  </li>
+  <li>
+      <a class="has-arrow" href="javascript:;">
+        <div class="parent-icon">
+          <ion-icon name="mail-sharp"></ion-icon>
+        </div>
+        <div class="menu-title">Email</div>
+      </a>
+      <ul>
+        <li> <a href="{% url 'e_validator' %}">
+            <ion-icon name="ellipse-outline"></ion-icon>Validator
+          </a>
+        </li>
+        <li> <a href="{% url 'e_uploaded' %}">
+            <ion-icon name="ellipse-outline"></ion-icon>Uploaded
+          </a>
+        </li>
+        <li> <a href="{% url 'e_leads' %}">
+          <ion-icon name="ellipse-outline"></ion-icon>Leads
+        </a>
+      </li>
+        <!-- <li> <a href="#">
+            <ion-icon name="ellipse-outline"></ion-icon>Settngs
+          </a>
+        </li> -->
+      </ul>
+    </li>
+  <li class="menu-label">Account management</li>
+  <li>
+    <a href="{% url 'settings' %}">
+      <div class="d-flex align-items-center">
+        <div class="parent-icon">
+          <ion-icon name="settings-sharp"></ion-icon>
+        </div>
+        <div class="ms-3"><span>Profile Settings</span></div>
+      </div>
+    </a>
+  </li>
+  <li class="menu-label">Werifier API</li>
+  <li>
+    <a href="{% url 'werifier_api' %}">
+      <div class="parent-icon">
+        <ion-icon name="key-sharp"></ion-icon>
+      </div>
+      <div class="menu-title">Configure API</div>
+    </a>
+  </li>
+  <!-- <li>
+    <a class="has-arrow" href="javascript:;">
+      <div class="font-22"> <i class="fadeIn animated bx bx-group"></i>
+      </div>
+      <div class="ms-2">Team Management</div>
+    </a>
+    <ul>
+      <li> <a href="#">
+          <ion-icon name="ellipse-outline"></ion-icon>Manage Members
+        </a>
+      </li>
+      <li> <a href="#" target="_blank">
+          <ion-icon name="ellipse-outline"></ion-icon>Add Member
+        </a>
+      </li>
+      <li> <a href="#" target="_blank">
+          <ion-icon name="ellipse-outline"></ion-icon>Activity Log
+        </a>
+      </li>
+    </ul>
+  </li> -->
+  <!-- {% if user.is_superuser %}
+  <li class="menu-label">Admin Settings</li>
+  <li>
+    <a class="has-arrow" href="javascript:;">
+      <div class="parent-icon">
+        <ion-icon name="person-circle-sharp"></ion-icon>
+      </div>
+      <div class="menu-title">Manage Users</div>
+    </a>
+    <ul>
+      <li> <a href="#" target="_blank">
+          <ion-icon name="ellipse-outline"></ion-icon>All Users
+        </a>
+      </li>
+      <li> <a href="#" target="_blank">
+          <ion-icon name="ellipse-outline"></ion-icon>Add new User
+        </a>
+      </li>
+      <li> <a href="#" target="_blank">
+          <ion-icon name="ellipse-outline"></ion-icon>Blocked users
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="#">
+      <div class="parent-icon">
+        <ion-icon name="shield-checkmark-sharp"></ion-icon>
+      </div>
+      <div class="menu-title">Site Settings</div>
+    </a>
+  </li>
+  <li>
+    <a href="#">
+      <div class="parent-icon">
+        <ion-icon name="shield-checkmark-sharp"></ion-icon>
+      </div>
+      <div class="menu-title">API Settings</div>
+    </a>
+  </li>
+  {% endif %} -->
+
+  <!-- <li class="menu-label">Doc & Support</li>
+  <li>
+    <a href="#" target="_blank">
+      <div class="parent-icon">
+        <ion-icon name="document-text-sharp"></ion-icon>
+      </div>
+      <div class="menu-title">Documentation</div>
+    </a>
+  </li>
+  <li>
+    <a href="#" target="_blank">
+      <div class="parent-icon">
+        <ion-icon name="link-sharp"></ion-icon>
+      </div>
+      <div class="menu-title">Support</div>
+    </a>
+  </li> -->
+</ul>
+<!--end navigation-->

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Werifier Profile{% endblock %}
+{% block maincontent %}
+<!-- start page content wrapper-->
+<div class="page-content-wrapper">
+    <!-- start page content-->
+   <div class="page-content">
+    <!--start breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Settings</div>
+      <div class="ps-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0 p-0 align-items-center">
+            <li class="breadcrumb-item"><a href="javascript:;"><ion-icon name="home-outline"></ion-icon></a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="ms-auto">
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary">Profile Settings</button>
+          <button type="button" class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+            <a class="dropdown-item" href="javascript:;">Email Preferrence</a>
+            <a class="dropdown-item" href="javascript:;">Billing & Invioces</a>
+            <a class="dropdown-item" href="javascript:;">Security Settings</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:;">Change Password</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="card radius-10">
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+            <h5 class="mb-3">Edit Profile</h5>
+            <div class="mb-4 d-flex flex-column gap-3 align-items-center justify-content-center">
+              <div class="user-change-photo shadow">
+                <img src="{% if user.profile.dp %}{{ user.profile.dp.url }}{% else %}{% static 'images/profile-default.png' %}{% endif %}" alt="...">
+              </div>
+              <input type="file" name="profile_picture" class="btn btn-primary btn-sm radius-30"/>
+            </div>
+            <h5 class="mb-0 mt-4">User Information</h5>
+            <hr>
+            <div class="row g-3">
+              <div class="col-6">
+                 <label class="form-label">Username</label>
+                 <input type="text" disabled class="form-control" value="@{{ user.username }}">
+              </div>
+              <div class="col-6">
+               <label class="form-label">Email address</label>
+               <input type="text" name="email" required class="form-control" value="{% if user.email %}{{ user.email }}{% endif %}">
+             </div>
+               <div class="col-6">
+                 <label class="form-label">First Name</label>
+                 <input type="text" name="first_name" required class="form-control" value="{% if user.first_name %}{{ user.first_name }}{% endif %}">
+             </div>
+             <div class="col-6">
+                 <label class="form-label">Last Name</label>
+                 <input type="text" name="last_name" required class="form-control" value="{% if user.last_name %}{{ user.last_name }}{% endif %}">
+             </div>
+           </div>
+
+           <h5 class="mb-0 mt-4">Contact Information</h5>
+           <hr>
+           <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Address</label>
+              <input type="text" name="address" required class="form-control" value="{% if user.profile.address %}{{ user.profile.address }}{% endif %}">
+             </div>
+             <div class="col-6">
+                <label class="form-label">City</label>
+                <input type="text" name="city" required class="form-control" value="{% if user.profile.city %}{{ user.profile.city }}{% endif %}">
+             </div>
+             <div class="col-6">
+              <label class="form-label">Country</label>
+              <input type="text" name="country" required class="form-control" value="{% if user.profile.country %}{{ user.profile.country }}{% endif %}">
+            </div>
+              <div class="col-6">
+                <label class="form-label">Postal Code</label>
+                <input type="text" name="postal_code" required class="form-control" value="{% if user.profile.postal_code %}{{ user.profile.postal_code }}{% endif %}">
+            </div>
+            <div class="col-6">
+                <label class="form-label">State</label>
+                <input type="text" name="state" required class="form-control" value="{% if user.profile.state %}{{ user.profile.state }}{% endif %}">
+            </div>
+            <div class="col-12">
+              <label class="form-label">About Me</label>
+              <textarea class="form-control" required rows="4" cols="4" name="bio" placeholder="Describe yourself...">{% if user.profile.bio %}{{ user.profile.bio }}{% endif %}</textarea>
+             </div>
+            </div>
+            <div class="text-start mt-3">
+              <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+            </div>
+          </div>
+         </form>
+        </div>
+      </div>
+    </div><!--end row-->
+
+    </div>
+    <!-- end page content-->
+   </div>
+{% endblock %}
